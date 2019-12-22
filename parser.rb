@@ -11,12 +11,6 @@ set :allow_methods, "POST"
 set :allow_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 set :expose_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 
-port = process.env.PORT;
-if port == null || port == "") do
-  port = 8000;
-end
-app.listen(port);
-
 def passive_voice(text)
   passive_sentences = passive_sentences(text)
   active_suggestions = active_suggestions(passive_sentences)
