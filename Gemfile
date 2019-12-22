@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+gem 'sinatra'
+gem 'engtagger'
+gem 'pragmatic_segmenter'
+gem 'sinatra'
+gem 'sinatra-cors'
+gem 'pry'
