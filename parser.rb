@@ -5,6 +5,8 @@ require 'pragmatic_segmenter'
 require 'sinatra'
 require 'sinatra/cors'
 require 'pry'
+require 'json'
+require 'awesome_print'
 
 set :allow_origin, '*'
 set :allow_methods, "POST"
@@ -43,18 +45,13 @@ def active_suggestions(passive_sentences)
   results
 end
 
-# TODO: Actuallt decide if this is neccesarry
+# TODO: Actually decide if this is neccesarry
 def convert_to_active_voice(passive_sentence)
-  'This is in passive voice'
+  'This sentence contains the use of passive voice'
 end
 
 post '/' do
-  text = request.body.string
-  text.gsub!(/[^\x00-\x7F]/, " ").gsub!(/\s+/, ' ') # improve this
+  text = request.body.string.force_encoding('UTF-8').gsub("\xE2\x80\x8C", '') # remove ASCII hidden characters
   response.header.update({"Content-Type" => 'text/json', "X-Content-Type-Options" => 'nosniff'})
   passive_voice(text).to_json
-end
-
-get '/' do
-  "Hello World"
 end
