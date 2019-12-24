@@ -18,16 +18,12 @@ end
 
 def passive_sentence?(phrase)
   passive_voice_regexes = [
-  /.*NN.*VB.*IN.*NN.*/, # The leters were written by james
-  /.*NN.*VBN.*VBN.*/, # letters have been written
-  /.*NN.*(VBZ|VBD).*VBN[^NN]*/] # is sold/were made/was robbed
-
-  phrase = EngTagger.new.get_readable(phrase)
-  matches = passive_voice_regexes.map do |regex|
-    match = regex.match(phrase)
-    match[0] == phrase if match
-  end
-  matches.include?(true)
+    /<in>by<\/in>/,
+    /<vbd>were<\/vbd> <vbn>/,
+    /<vb>be<\/vb> <vbn>/ # past tense verb
+  ]
+  phrase = EngTagger.new.add_tags(phrase)
+  matches = passive_voice_regexes.map { |regex| phrase =~ regex }.compact.any?
 end
 
 def passive_sentences(text)
