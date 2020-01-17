@@ -1,22 +1,21 @@
 def passive_voice_regexes
   [ /(<vb(n|d)>\w*?<\/vb(n|d)>|<jj>\w*?<\/jj>)( <r\w*?>\w*?<\/r\w*?>)*? <in>by<\/in>( <jj>\w*?<\/jj>| <prp\w*>\w*?<\/prp\w*>| <det>\w*?<\/det>| <in>\w*?<\/in>)*? (<nn\w*?>\w*?<\/nn\w*?>|<prp\w*>\w*?<\/prp\w*>)/,
-    /by<\/in> <wp>what/, # by what was in the evelope
+    /by<\/in>( <(jj|rb)>\w*?<\/(jj|rb>))* <wp>what/, # by what was in the evelope
     /<in>by<\/in> <prp>it<\/prp>/, # overwhelmed by it
-    # ,/<vbd>were<\/vbd> <vbn>/, # were written
-    # /<nn>.*<\/nn> <vbd>was<\/vbd> <vbn>.*<\/vbn>/ # bank was robbed
+    /<nn\w*?>\w*?<\/nn\w*>( <(jj|rb)>\w*?<\/(jj|rb>))* <vbd>(was|were)<\/vbd>( <(jj|rb)>\w*?<\/(jj|rb>))* <vbn>\w*?<\/vbn>/ # were written, was robbed
   ]
 end
 
 def passive_exceptions_regex
   [/prp> <in>by</, # helped himself by buying a car
-    /by<\/in> <det>the<\/det> <nn.*>.*<\/nn.*> <in>.*<\/in>( <det>the<\/det>)*( <prp.*>.*<\/prp.*>)* <nn.*>.*<\/nn.*>/,
+    /by<\/in> <det>the<\/det> <nn\w*?>.*<\/nn\w*?> <in>\w*?<\/in>( <det>the<\/det>)*( <prp\w*?>\w*?<\/prp.\w*?>)* <nn.\w*?>\w*?<\/nn\w*?>/,
     # by the side of the road, by the look on his face
     /by<\/in> <vbg>/, # avoided the dog by jumping over it
     /vbg> <in>by/, # he was talking by the table
     /by<\/in> <vbg>/, # he repaired the car by caling a mechanic
     /\/cd> <in>by<\/in>/, # one by one
     /<in>by<\/in> <cd>/, # late by 15 minutes
-    /<\/nn.*> <in>by/] # he repaired the car by caling a mechanic
+    /<\/nn\w*?> <in>by/] # he repaired the car by caling a mechanic
 end
 
 def passive_exceptions
