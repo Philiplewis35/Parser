@@ -1,6 +1,7 @@
 def passive_voice_regexes
-  [ /(<vb(n|d)>\w*?<\/vb(n|d)>|<jj>\w*?<\/jj>)( <r\w*?>\w*?<\/r\w*?>)*? <in>by<\/in>( <jj>\w*?<\/jj>| <prp\w*>\w*?<\/prp\w*>| <det>\w*?<\/det>| <in>\w*?<\/in>)*? <nn\w*?>\w*?<\/nn\w*?>/,
-    /by<\/in> <wp>what/ # by what was in the evelope
+  [ /(<vb(n|d)>\w*?<\/vb(n|d)>|<jj>\w*?<\/jj>)( <r\w*?>\w*?<\/r\w*?>)*? <in>by<\/in>( <jj>\w*?<\/jj>| <prp\w*>\w*?<\/prp\w*>| <det>\w*?<\/det>| <in>\w*?<\/in>)*? (<nn\w*?>\w*?<\/nn\w*?>|<prp\w*>\w*?<\/prp\w*>)/,
+    /by<\/in> <wp>what/, # by what was in the evelope
+    /<in>by<\/in> <prp>it<\/prp>/, # overwhelmed by it
     # ,/<vbd>were<\/vbd> <vbn>/, # were written
     # /<nn>.*<\/nn> <vbd>was<\/vbd> <vbn>.*<\/vbn>/ # bank was robbed
   ]
