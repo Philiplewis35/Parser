@@ -45,8 +45,18 @@ def convert_to_active_voice(passive_sentence)
   'This sentence contains the use of passive voice'
 end
 
+def format_text(text)
+  # binding.pry
+  text = text.force_encoding('UTF-8')
+  text.gsub!("\xE2\x80\x8C", '')
+  text.gsub!("\u00A0", ' ')
+  puts text
+  text
+end
+
 post '/' do
-  text = request.body.string.force_encoding('UTF-8').gsub("\xE2\x80\x8C", '') # remove ASCII hidden characters
+  text = format_text(request.body.string)
+  # puts "text: " + text
   response.header.update({"Content-Type" => 'text/json', "X-Content-Type-Options" => 'nosniff'})
   puts passive_voice(text).to_json
   passive_voice(text).to_json
