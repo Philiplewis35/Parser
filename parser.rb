@@ -14,6 +14,8 @@ set :allow_methods, "POST"
 set :allow_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 set :expose_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 
+$index = 0
+
 def passive_voice(text)
   passive_sentences = passive_sentences(text)
   active_suggestions = active_suggestions(passive_sentences)
@@ -35,8 +37,9 @@ end
 
 def active_suggestions(passive_sentences)
   results = {}
-  passive_sentences.map.with_index(1) do |passive_sentence, index|
-    results[pluck_passive(passive_sentence)] = [index, convert_to_active_voice(passive_sentence)]
+  passive_sentences.map do |passive_sentence |
+    $index += 1
+    results[pluck_passive(passive_sentence)] = [$index, convert_to_active_voice(passive_sentence)]
   end
   results
 end
