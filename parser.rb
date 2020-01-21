@@ -7,7 +7,7 @@ require 'sinatra'
 require 'sinatra/cors'
 require 'pry'
 require 'json'
-require 'awesome_print'
+# require 'awesome_print'
 
 set :allow_origin, '*'
 set :allow_methods, "POST"
