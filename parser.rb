@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require './support'
+require './session'
 require 'rubygems'
 require 'engtagger'
 require 'pragmatic_segmenter'
@@ -16,8 +17,8 @@ set :expose_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 $index = 0
 $ignored_text = []
 
-def passive_voice(text)
-  passive_sentences = passive_sentences(text)
+def passive_voice(text, session_key)
+  passive_sentences = passive_sentences(text, session_key)
   active_suggestions = active_suggestions(passive_sentences)
 end
 
@@ -26,13 +27,18 @@ def passive_sentence?(phrase)
   matches = passive_voice_regexes.map { |regex| phrase =~ regex }.compact.any?
 end
 
-def passive_sentences(text)
+def passive_sentences(text, session_key)
   sentences = PragmaticSegmenter::Segmenter.new(text: text).segment
   passive_sentences = []
   sentences.map do |sentence|
-    passive_sentences << sentence if !($ignored_text.include? sentence) && passive_sentence?(sentence) && !passive_exception?(sentence)
+    passive_sentences << sentence if passive_sentence?(sentence) && !passive_exception?(sentence) && !ignored?(sentence, session_key)
   end
   passive_sentences
+end
+
+def ignored?(sentence, session_key)
+  session = get_session(session_key)
+  session.ignored_text.include? pluck_passive(sentence)
 end
 
 def active_suggestions(passive_sentences)
@@ -56,13 +62,15 @@ def format_text(text)
 end
 
 post '/' do
-  text = format_text(request.body.string)
+  text = format_text(params[:text])
   response.header.update({"Content-Type" => 'text/json', "X-Content-Type-Options" => 'nosniff'})
-  passive_voice(text).to_json
+  passive_voice(text, params[:session_key]).to_json
 end
 
 post '/ignore' do
-  puts 'ignore'
-  text = format_text(request.body.string)
-  $ignore_text << text
+  text = format_text(params[:text])
+  ignored_phrase = pluck_passive(text)
+  session = get_session(params[:session_key])
+  session.add_ignored_phrase(ignored_phrase)
+  (ignored_phrase + ': ignored').to_json
 end
