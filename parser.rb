@@ -74,3 +74,8 @@ post '/ignore' do
   session.add_ignored_phrase(ignored_phrase)
   (ignored_phrase + ': ignored').to_json
 end
+
+get '/explainer' do
+  @phrase = 'foobar'
+  erb :explainer
+end
