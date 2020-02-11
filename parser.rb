@@ -14,7 +14,6 @@ set :allow_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 set :expose_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 
 $index = 0
-$ignored_text = []
 
 def passive_voice(text, session_key)
   passive_sentences = passive_sentences(text, session_key)
@@ -30,7 +29,7 @@ def passive_sentences(text, session_key)
   sentences = PragmaticSegmenter::Segmenter.new(text: text).segment
   passive_sentences = []
   sentences.map do |sentence|
-    passive_sentences << sentence if passive_sentence?(sentence) && !passive_exception?(sentence) && !ignored?(sentence, session_key)
+    passive_sentences << sentence if passive_sentence?(sentence) && !passive_exception?(sentence)
   end
   passive_sentences
 end
@@ -41,10 +40,10 @@ def ignored?(sentence, session_key)
 end
 
 def active_suggestions(passive_sentences)
-  results = {}
+  results = []
   passive_sentences.map do |passive_sentence |
     $index += 1
-    results[pluck_passive(passive_sentence)] = [$index, convert_to_active_voice(passive_sentence)]
+    results << [id: $index, phrase: pluck_passive(passive_sentence), info: convert_to_active_voice(passive_sentence), replacement: []]
   end
   results
 end
@@ -63,21 +62,21 @@ end
 post '/' do
   text = format_text(params[:text])
   response.header.update({"Content-Type" => 'text/json', "X-Content-Type-Options" => 'nosniff'})
-  passive_voice(text, params[:session_key]).to_json
+  passive_voice(text).to_json
 end
 
-post '/ignore' do
-  text = format_text(params[:text])
-  ignored_phrase = pluck_passive(text)
-  session = get_session(params[:session_key])
-  session.add_ignored_phrase(ignored_phrase)
-  (ignored_phrase + ': ignored').to_json
-end
+# post '/ignore' do
+#   text = format_text(params[:text])
+#   ignored_phrase = pluck_passive(text)
+#   session = get_session(params[:session_key])
+#   session.add_ignored_phrase(ignored_phrase)
+#   (ignored_phrase + ': ignored').to_json
+# end
 
-get '/explainer' do
-  @phrase = 'foobar'
-  erb :explainer
-end
+# get '/explainer' do
+#   @phrase = 'foobar'
+#   erb :explainer
+# end
 
 get '/name' do
   'Passive voice detector'
