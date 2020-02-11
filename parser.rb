@@ -79,3 +79,11 @@ get '/explainer' do
   @phrase = 'foobar'
   erb :explainer
 end
+
+get '/name' do
+  'Passive voice detector'
+end
+
+get '/description' do
+  'Detects passive voice'
+end
