@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 require './support'
 require './session'
 require 'rubygems'
