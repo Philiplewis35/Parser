@@ -15,8 +15,8 @@ set :expose_headers, "Content-Length, Content-Type, X-Content-Type-Options"
 
 $index = 0
 
-def passive_voice(text, session_key)
-  passive_sentences = passive_sentences(text, session_key)
+def passive_voice(text)
+  passive_sentences = passive_sentences(text)
   active_suggestions = active_suggestions(passive_sentences)
 end
 
@@ -25,7 +25,7 @@ def passive_sentence?(phrase)
   matches = passive_voice_regexes.map { |regex| phrase =~ regex }.compact.any?
 end
 
-def passive_sentences(text, session_key)
+def passive_sentences(text)
   sentences = PragmaticSegmenter::Segmenter.new(text: text).segment
   passive_sentences = []
   sentences.map do |sentence|
@@ -34,16 +34,11 @@ def passive_sentences(text, session_key)
   passive_sentences
 end
 
-def ignored?(sentence, session_key)
-  session = get_session(session_key)
-  session.ignored_text.include? pluck_passive(sentence)
-end
-
 def active_suggestions(passive_sentences)
   results = []
   passive_sentences.map do |passive_sentence |
     $index += 1
-    results << [id: $index, phrase: pluck_passive(passive_sentence), info: convert_to_active_voice(passive_sentence), replacement: []]
+    results << {id: $index, phrase: pluck_passive(passive_sentence), explanation: convert_to_active_voice(passive_sentence), suggested_replacements: []}
   end
   results
 end
