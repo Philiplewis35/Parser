@@ -1,5 +1,4 @@
 require './support'
-require './session'
 require 'rubygems'
 require 'engtagger'
 require 'pragmatic_segmenter'
