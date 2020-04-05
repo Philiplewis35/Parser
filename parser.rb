@@ -16,21 +16,16 @@ def get_passive_sentences(text)
   sentences = PragmaticSegmenter::Segmenter.new(text: text).segment
   passive_sentences = []
   sentences.map do |sentence|
-    passive_sentences << sentence if passive?(sentence) && !passive_exception?(sentence)
+    passive_sentences << sentence if EngTagger.new.add_tags(sentence) =~ passive_regex
   end
   passive_sentences
-end
-
-def passive?(phrase)
-  phrase = EngTagger.new.add_tags(phrase)
-  matches = passive_voice_regexes.map { |regex| phrase =~ regex }.compact.any?
 end
 
 def format_response(passive_sentences, results = [])
   passive_sentences.map do |passive_sentence |
     results << {
                 phrase: pluck_passive(passive_sentence),
-                explanation: 'This phrase is written in passive voice.',
+                explanation: 'This phrase may be written in passive voice.',
                 suggested_replacement: 'Consider revising'
               }
   end
@@ -38,6 +33,7 @@ def format_response(passive_sentences, results = [])
 end
 
 post '/analyse' do
+  return [].to_json unless params[:text]
   text = JSON.parse(params[:text].to_json)
   format_response(get_passive_sentences(text)).to_json
 end
