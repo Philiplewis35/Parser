@@ -26,7 +26,8 @@ def format_response(passive_sentences, results = [])
     results << {
                 phrase: pluck_passive(passive_sentence),
                 explanation: 'This phrase may be written in passive voice.',
-                suggested_replacement: 'Consider revising'
+                suggestion: 'Consider revising',
+                substituion: false
               }
   end
   results
