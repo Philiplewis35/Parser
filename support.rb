@@ -1,5 +1,5 @@
 def passive_regex
-  /((<vbd>\w*?<\/vbd>)|(<vbp>are<\/vbp>)|(<vbz>is<\/vbz>)|(<vb>be<\/vb>)|(<vbg>being<\/vbg>))( <(jj|rb)>\w*?<\/(jj|rb>))* <vbn>\w*?<\/vbn>/
+  /((<vbd>\w*?<\/vbd>)|(<vbp>are<\/vbp>)|(<vbz>is<\/vbz>)|(<vb>be<\/vb>)|(<vbn>been<\/vbn>)|(<vbg>being<\/vbg>))( <(jj|rb)>\w*?<\/(jj|rb>))* <vbn>\w*?<\/vbn>/
 end
 
 def pluck_passive(phrase)
