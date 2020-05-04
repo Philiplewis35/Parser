@@ -8,7 +8,7 @@ describe 'parser' do
   include Rack::Test::Methods
 
 
-  passive_sentences = ['the letters were written by james', 'the bank was robbed', 'she was surprised by the contents of the evelope',
+  passive_sentences = ['the letters were written by james', 'the bank was robbed', 'she was surprised by the contents of the envelope',
       'the documents are being signed', 'The piece is really enjoyed by the group', 'The house will be cleaned every week',
       'The machines can be used for that purpose', 'The metal beams were corroded by the seawater',
       'The Grand Canyon is visited by many people every year', 'Instructions will be given later today', 'The comet was viewed by the class',
@@ -68,8 +68,8 @@ describe 'parser' do
   end
 
   it 'should not misidentify passive sentences' do
-    active_voice_sentences = ['He ate 6 cookies', 'giraffes roam the savanah', 'Sue changed the flat tyre',
-                              'We are going to watch a film tonigh', 'I ran the obstacle course', 'The crew paved the enitre road',
+    active_voice_sentences = ['He ate 6 cookies', 'giraffes roam the savannah', 'Sue changed the flat tyre',
+                              'We are going to watch a film tonight', 'I ran the obstacle course', 'The crew paved the entire road',
                               'I read the book within 2 weeks', 'I will clean the house next week', 'Tom painted the house',
                               'A fire destroyed the forest', 'You can never be too careful', 'Mice can be cute, sometimes.',
                               'Are you okay?', 'That bread is mouldy', 'When was the last match on?']
